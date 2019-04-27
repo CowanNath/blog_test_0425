@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}首页{% endblock %}
+{% block link_extends %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block home_status %}active{% endblock %}
+
+{% block content %}
+<p>
+    Welcome to CowanNath's Blog
+</p>
+{% endblock %}

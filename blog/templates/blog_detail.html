@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ blog.title }}{% endblock %}
+{% block link_extends %}{% endblock %}
+
+{% block blog_list_status %}active{% endblock %}
+
+{% block content %}
+    <ul>
+        <li>{{ blog.title }}</a></li>
+        <li>作者：{{ blog.author }}</li>
+        <li>创建时间：{{ blog.created_time }}</li>
+        <li>分类：{{ blog.blog_type }}</li>
+        <li>{{ blog.content }}</li>
+    </ul>
+    <p>{{ blog.content }}</p>
+{% endblock %}

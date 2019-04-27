@@ -1,0 +1,5 @@
+{% extends 'blog_list.html' %}
+
+{% block title %}{{ blog_type }}{% endblock %}
+
+{% block panel_title %}博客分类:{{ blog_type }}(共有{{ blogs.count }}篇博客){% endblock %}
