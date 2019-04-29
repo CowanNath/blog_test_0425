@@ -6,12 +6,43 @@
 {% block blog_list_status %}active{% endblock %}
 
 {% block content %}
-    <ul>
-        <li>{{ blog.title }}</a></li>
-        <li>作者：{{ blog.author }}</li>
-        <li>创建时间：{{ blog.created_time }}</li>
-        <li>分类：{{ blog.blog_type }}</li>
-        <li>{{ blog.content }}</li>
-    </ul>
-    <p>{{ blog.content }}</p>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>{{ blog.title }}</h3>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        <li>作者：{{ blog.author }}</li>
+                        <li>创建时间：{{ blog.created_time }}</li>
+                        <li>分类：{{ blog.blog_type|safe }}</li>
+                        <li>阅读数：{{ blog.read_num }}</li>
+                    </ul>
+                    <p>{{ blog.content|safe }}</p>
+                    
+                    <!-- 上下篇博客 -->
+                    <div aria-label="...">
+                        <ul class="pager">
+                            {% if previous_blog %}
+                                <li class="previous"><a href="{% url 'blog_detail' previous_blog.id %}"><span aria-hidden="true">&larr;</span> 上一篇博客：{{ previous_blog.title }}</a></li>
+                            {% else %}
+                                <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> 上一篇博客：没有了啊哦~</a></li>
+                            {% endif %}
+                            
+                            {% if next_blog %}
+                                <li class="next"><a href="{% url 'blog_detail' next_blog.id %}">下一篇博客：{{ next_blog.title }} <span aria-hidden="true">&rarr;</span></a></li>
+                            {% else %}
+                                <li class="next disabled"><a href="#">下一篇博客：没有了啊哦~ <span aria-hidden="true">&rarr;</span></a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 博客主体 -->
+    
+ 
 {% endblock %}
