@@ -16,4 +16,4 @@ class ReadDetail(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     read_num = models.IntegerField(default = 0)
-    read_date = models.DateTimeField(default = timezone.now)
+    read_date = models.DateField(default = timezone.now)

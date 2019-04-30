@@ -2,8 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
 from django.db.models import Sum, Count
+from django.utils import timezone
 from .models import Blog, BlogType
-from read_statistics.models import ReadNum
+from read_statistics.models import ReadNum, ReadDetail
 
 def get_common_data(blogs, request):
     # 分页器
@@ -17,8 +18,6 @@ def get_common_data(blogs, request):
     for blog_date in blog_dates:
         blog_date_count = Blog.objects.filter(created_time__year = blog_date.year, created_time__month = blog_date.month).count()
         blog_dates_dict[blog_date] = blog_date_count
-
-    print(blog_dates_dict)
 
     context = {}
     context["blogs_of_page"] = blogs_of_page
@@ -55,14 +54,18 @@ def blog_detail(request, id):
 
     # 阅读计数
     ct = ContentType.objects.get_for_model(blog)
-
     if not request.COOKIES.get("%s_%s_read" % ("blog", blog.id)):
-        if ReadNum.objects.filter(content_type = ct, object_id = blog.id):
-            readNum = ReadNum.objects.get(content_type = ct, object_id = blog.id)
-        else:
-            readNum = ReadNum(content_type = ct, object_id = blog.id)
+
+        # 总的阅读计数
+        readNum, created = ReadNum.objects.get_or_create(content_type = ct, object_id = blog.id)
         readNum.read_num += 1
         readNum.save()
+
+        # 每日阅读计数
+        date = timezone.now().date()
+        readDetail, created = ReadDetail.objects.get_or_create(content_type = ct, object_id = blog.id, read_date = date)
+        readDetail.read_num += 1
+        readDetail.save()
 
     context = {}
     context["blog"] = blog
